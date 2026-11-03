@@ -1,0 +1,126 @@
+DATA:
+  MAX_SAMPLE_INTERVAL: 200
+  MEAN:
+    - 0.485
+    - 0.456
+    - 0.406
+    - 0.449
+    - 0.449
+    - 0.449
+  SEARCH:
+    CENTER_JITTER: 3
+    FACTOR: 4.0
+    SCALE_JITTER: 0.25
+    SIZE: 256
+    NUMBER: 4
+  STD:
+    - 0.229
+    - 0.224
+    - 0.225
+    - 0.226
+    - 0.226
+    - 0.226
+  TEMPLATE:
+    CENTER_JITTER: 0
+    FACTOR: 2.0
+    SCALE_JITTER: 0
+    SIZE: 128
+    NUMBER: 2
+  TRAIN:
+    DATASETS_NAME:
+      - LasHeR_train
+    DATASETS_RATIO:
+      - 1
+    SAMPLE_PER_EPOCH: 30000 # 原40000→30000
+  VAL:
+    DATASETS_NAME:
+      - LasHeR_val
+    DATASETS_RATIO:
+      - 1
+    SAMPLE_PER_EPOCH: 6000
+MODEL:
+  PRETRAIN_FILE: "SOT_Pretrained_256.pth.tar"
+  EXTRA_MERGER: False
+  RETURN_INTER: False
+  KEEP_RATE: 0.85
+  TEXT_LEARN_NUM: 2
+  LANGUAGE_ROUTER:
+    ENABLED: true
+    TOKEN_NUM: 3
+    HIDDEN_DIM: 128
+    DROPOUT: 0.0
+  DSL:
+    ENABLED: False
+    NUM_HEADS: 8
+    HIDDEN_DIM: 128
+    DROPOUT: 0.0
+    SPATIAL_RATIOS: [0.65, 0.75, 0.85, 1.0]
+    CHANNEL_RATIOS: [0.5, 0.6666667, 0.75, 0.8]
+    RELIABILITY_BIAS_STRENGTH: 2.0
+  MLP_GUIDANCE:
+    ENABLED: true
+    LOC: [5, 11, 17, 23]
+    INIT_SCALE: 0.0
+  BACKBONE:
+    TYPE: itpn_base
+    STRIDE: 16
+    CROSS_LOC: [5, 11, 17, 23]
+    CE_KEEP_RATIO: [0.85, 0.85, 0.85, 0.85]
+    ADD_CLS_TOKEN: True
+  HEAD:
+    TYPE: CENTER
+    NUM_CHANNELS: 256
+  MEMORY:
+    ENABLED: true
+    LONG_CAPACITY: 4
+    SHORT_CAPACITY: 8
+    LONG_TOPK: 2
+    SHORT_TOPK: 2
+    LONG_NOVELTY: 0.85 # 0.92
+    LONG_QUALITY_THRESHOLD: 0.45
+    LONG_UNCERTAINTY_THRESHOLD: 0.50
+    SHORT_QUALITY_THRESHOLD: 0.10
+    QUALITY_WEIGHT: 0.35
+    UNCERTAINTY_WEIGHT: 0.50
+    RECENCY_WEIGHT: 0.20
+    RECENCY_TAU: 5.0
+    HEURISTIC_WEIGHT: 0.30
+TRAIN:
+  BACKBONE_MULTIPLIER: 0.1
+  DROP_PATH_RATE: 0.1
+  CROSS_DROP_PATH: []
+  BATCH_SIZE: 4 #  8+AMP, 提升GPU利用率
+  EPOCH: 20
+  GIOU_WEIGHT: 2.0
+  L1_WEIGHT: 5.0
+  AUX_WEIGHT: 0.0
+  UNCERTAINTY_WEIGHT: 3.0 # 原0.20, Round1中uncertainty_loss贡献<0.1%, 无效训练
+  GRAD_CLIP_NORM: 0.1
+  LR: 0.0001
+  LR_DROP_EPOCH: 16 # 原7, 延迟衰减给uncertainty_head 2个额外epoch warm-up
+  NUM_WORKER: 8
+  OPTIMIZER: ADAMW
+  PRINT_INTERVAL: 100
+  SCHEDULER:
+    TYPE: step
+    DECAY_RATE: 0.1
+  VAL_EPOCH_INTERVAL: 5 # 15轮中验证3次
+  WEIGHT_DECAY: 0.0005
+  AMP: False # 开启混合精度, 提速1.5-2x
+  FIX_BN: true
+  SAVE_EPOCH_INTERVAL: 2 # 每5个epoch保存一次权重
+  SAVE_LAST_N_EPOCH: 10 # 保留最后5个epoch的权重
+TEST:
+  EPOCH: 15 # 测试时加载best checkpoint(可按实际最优改)
+  SEARCH_FACTOR: 4.0
+  SEARCH_SIZE: 256
+  TEMPLATE_FACTOR: 2.0
+  TEMPLATE_SIZE: 128
+  UPDATE_INTERVALS: 10 #每 25 帧周期触发文本重新生成
+  UPDATE_THRESHOLD: 0.65 # 跟踪置信度 ≥ 0.65 才允许更新
+  MEMORY_EVENT_ENABLED: true # 启用场景变化事件触发额外更新
+  MEMORY_EVENT_NOVELTY: 0.4 # 0.25 # 0.25 意味着 cos_sim < 0.75 就触发事件更新，几乎是每帧都在更新
+  MEMORY_UPDATE_QUALITY: 0.35 # memory quality ≥ 0.35 才允许更新模板
+  MEMORY_UPDATE_UNCERTAINTY: 0.60 # uncertainty ≤ 0.60 才允许更新模板
+  MEMORY_MIN_UPDATE_GAP: 10 # 两次文本更新最少间隔 15 帧
+
