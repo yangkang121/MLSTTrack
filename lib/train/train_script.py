@@ -10,9 +10,9 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 # some more advanced functions
 from .base_functions import *
 # network related
-from lib.models.rsttrack import build_rsttrack
+from lib.models.mlsttrack import build_mlsttrack
 # forward propagation related
-from lib.train.actors import RSTTRACKActor
+from lib.train.actors import MLSTTRACKActor
 # for import modules
 import importlib
 
@@ -20,7 +20,7 @@ from ..utils.focal_loss import FocalLoss
 
 
 def run(settings):
-    settings.description = 'Training script for rsttrack'
+    settings.description = 'Training script for mlsttrack'
 
     # update the default configs with config file
     if not os.path.exists(settings.cfg_file):
@@ -48,8 +48,8 @@ def run(settings):
     loader_train, loader_val = build_dataloaders(cfg, settings)
 
     # Create network
-    if settings.script_name == "rsttrack":
-        net = build_rsttrack(cfg)
+    if settings.script_name == "mlsttrack":
+        net = build_mlsttrack(cfg)
     else:
         raise ValueError("illegal script name")
 
@@ -65,12 +65,12 @@ def run(settings):
     settings.distill = getattr(cfg.TRAIN, "DISTILL", False)
     settings.distill_loss_type = getattr(cfg.TRAIN, "DISTILL_LOSS_TYPE", "KL")
     # Loss functions and Actors
-    if settings.script_name == "rsttrack":
+    if settings.script_name == "mlsttrack":
         # here cls loss and cls weight are not use
         focal_loss = FocalLoss()
         objective = {'giou': giou_loss, 'l1': l1_loss, 'focal': focal_loss, 'cls': BCEWithLogitsLoss()}
         loss_weight = {'giou': cfg.TRAIN.GIOU_WEIGHT, 'l1': cfg.TRAIN.L1_WEIGHT, 'focal': 1., 'cls': 1.0, 'uncertainty': cfg.TRAIN.UNCERTAINTY_WEIGHT}
-        actor = RSTTRACKActor(net=net, objective=objective, loss_weight=loss_weight, settings=settings, cfg=cfg)
+        actor = MLSTTRACKActor(net=net, objective=objective, loss_weight=loss_weight, settings=settings, cfg=cfg)
     else:
         raise ValueError("illegal script name")
 

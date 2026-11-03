@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from lib.models.rsttrack import build_rsttrack
+from lib.models.mlsttrack import build_mlsttrack
 from lib.test.tracker.basetracker import BaseTracker
 import torch
 
@@ -17,11 +17,11 @@ from lib.utils.ce_utils import generate_mask_cond
 from Qwen_VL.qwen_generate import TextGenerator
 
 
-class RSTTrack(BaseTracker):
+class MLSTTrack(BaseTracker):
     _sequence_id_counter = 0
     def __init__(self, params, text_generator):
-        super(RSTTrack, self).__init__(params)
-        network = build_rsttrack(params.cfg, training=False)
+        super(MLSTTrack, self).__init__(params)
+        network = build_mlsttrack(params.cfg, training=False)
 
         missing_keys, unexpected_keys = network.load_state_dict(
             torch.load(self.params.checkpoint, map_location='cpu')['net'], strict=False
@@ -63,8 +63,8 @@ class RSTTrack(BaseTracker):
 
         self.save_all_boxes = params.save_all_boxes
         self.z_dict1 = {}
-        self.sequence_id = RSTTrack._sequence_id_counter
-        RSTTrack._sequence_id_counter += 1
+        self.sequence_id = MLSTTrack._sequence_id_counter
+        MLSTTrack._sequence_id_counter += 1
 
     def initialize(self, image, info: dict):
         z_patch_arr, resize_factor, z_amask_arr  = sample_target(image, info['init_bbox'], self.params.template_factor,
@@ -242,4 +242,4 @@ class RSTTrack(BaseTracker):
 
 
 def get_tracker_class():
-    return RSTTrack
+    return MLSTTrack

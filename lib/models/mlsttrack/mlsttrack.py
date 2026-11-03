@@ -13,8 +13,8 @@ from timm.models.layers import Mlp
 from lib.models.layers.attn import Attention_qkv
 from functools import partial
 import torch.nn.functional as F
-from lib.models.rsttrack.itpn import fast_itpn_base_3324_patch16_224
-from lib.models.rsttrack.dual_memory import DualTimescaleMemoryBank, MemoryConfig
+from lib.models.mlsttrack.itpn import fast_itpn_base_3324_patch16_224
+from lib.models.mlsttrack.dual_memory import DualTimescaleMemoryBank, MemoryConfig
 
 class ATTFu(nn.Module):
     def __init__(self, channels, ratio=1.0):
@@ -35,7 +35,7 @@ class ATTFu(nn.Module):
 
         return att[:, :, :self.channels]
 
-class RSTTrack(nn.Module):
+class MLSTTrack(nn.Module):
 
     def __init__(self, transformer, box_head, cfg, aux_loss=False, head_type="CORNER"):
 
@@ -275,7 +275,7 @@ class RSTTrack(nn.Module):
             raise NotImplementedError
 
 
-def build_rsttrack(cfg, training=True):
+def build_mlsttrack(cfg, training=True):
     current_dir = os.path.dirname(os.path.abspath(__file__))  # This is your Project Root
     pretrained_path = os.path.join(current_dir, '../../../pretrained')
     if cfg.MODEL.PRETRAIN_FILE and ('SOT' not in cfg.MODEL.PRETRAIN_FILE) and training:
@@ -296,7 +296,7 @@ def build_rsttrack(cfg, training=True):
 
     box_head = build_box_head(cfg, hidden_dim)
 
-    model = RSTTrack(
+    model = MLSTTrack(
         backbone,
         box_head,
         cfg,

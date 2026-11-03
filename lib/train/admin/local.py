@@ -1,8 +1,8 @@
 class EnvironmentSettings:
     def __init__(self):
-        self.workspace_dir = '/media/root123/date-5T/YK-Track_code/RSTTrack-main'    # Base directory for saving network checkpoints.
-        self.tensorboard_dir = '/media/root123/date-5T/YK-Track_code/RSTTrack-main/tensorboard'    # Directory for tensorboard files.
-        self.pretrained_networks = '/media/root123/date-5T/YK-Track_code/RSTTrack-main/pretrained_networks'
+        self.workspace_dir = '/media/root123/date-5T/YK-Track_code/MLSTTrack-main'    # Base directory for saving network checkpoints.
+        self.tensorboard_dir = '/media/root123/date-5T/YK-Track_code/MLSTTrack-main/tensorboard'    # Directory for tensorboard files.
+        self.pretrained_networks = '/media/root123/date-5T/YK-Track_code/MLSTTrack-main/pretrained_networks'
         self.got10k_val_dir = '/media/root123/date-5T/FMTrack_dataset/got10k/val'
         self.lasot_lmdb_dir = '/media/root123/date-5T/FMTrack_dataset/lasot_lmdb'
         self.got10k_lmdb_dir = '/media/root123/date-5T/FMTrack_dataset/got10k_lmdb'

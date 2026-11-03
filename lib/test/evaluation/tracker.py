@@ -9,7 +9,7 @@ from lib.utils.lmdb_utils import decode_img
 from pathlib import Path
 import numpy as np
 from lib.train.dataset.depth_utils import get_rgbd_frame
-import lib.test.parameter.rsttrack as params
+import lib.test.parameter.mlsttrack as params
 
 def trackerlist(name: str, parameter_name: str, dataset_name: str, run_ids = None, display_name: str = None,
                 result_only=False):

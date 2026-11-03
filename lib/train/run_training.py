@@ -80,8 +80,8 @@ def run_training(script_name, config_name, cudnn_benchmark=True, local_rank=-1, 
 
 def main():
     parser = argparse.ArgumentParser(description='Run a train scripts in train_settings.')
-    parser.add_argument('--script', type=str, default='rsttrack', help='Name of the train script.')
-    parser.add_argument('--config', type=str, default='RSTTrack', help="Name of the config file.")
+    parser.add_argument('--script', type=str, default='mlsttrack', help='Name of the train script.')
+    parser.add_argument('--config', type=str, default='MLSTTrack', help="Name of the config file.")
     parser.add_argument('--cudnn_benchmark', type=bool, default=True, help='Set cudnn benchmark on (1) or off (0) (default is on).')
     parser.add_argument('--local_rank', default=-1, type=int, help='node rank for distributed training')
     parser.add_argument('--local-rank', default=-1, type=int, help='node rank for distributed training')

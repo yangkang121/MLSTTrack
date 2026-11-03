@@ -8,7 +8,7 @@ from timm.models.layers import DropPath, to_2tuple, trunc_normal_
 from torch.nn import Parameter
 
 from lib.models.layers.patch_embed import PatchEmbed
-from lib.models.rsttrack.utils import combine_tokens, recover_tokens
+from lib.models.mlsttrack.utils import combine_tokens, recover_tokens
 
 
 class BaseBackbone(nn.Module):

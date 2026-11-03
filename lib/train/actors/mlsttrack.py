@@ -9,7 +9,7 @@ from ...utils.ce_utils import generate_mask_cond, adjust_keep_rate
 from lib.train.admin import multigpu
 
 
-class RSTTRACKActor(BaseActor):
+class MLSTTRACKActor(BaseActor):
     def __init__(self, net, objective, loss_weight, settings, cfg=None):
         super().__init__(net, objective)
         self.loss_weight = loss_weight

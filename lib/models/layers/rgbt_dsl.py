@@ -1,6 +1,6 @@
 """RGBT-language reliability-aware dynamic sparse learning modules.
 
-This file implements the three components used by the modified RSTTrack backbone:
+This file implements the three components used by the modified MLSTTrack backbone:
 1) Modality-aware Language Routing (MLR)
 2) Reliability-aware Dynamic Sparse Learning (RDSL)
 3) Dynamic Multi-Level Prompt Perception (DMLP)
@@ -319,7 +319,7 @@ class ReliabilityAwareDSL(nn.Module):
         lens_s: int,
         template_mask: Optional[torch.Tensor],
     ) -> torch.Tensor:
-        """Reuse RSTTrack's query/template/text/search attention evidence."""
+        """Reuse MLSTTrack's query/template/text/search attention evidence."""
         lens_q = attn.shape[-1] - len_text - lens_t - lens_s
         bs, hn, _, _ = attn.shape
         search_start = lens_q + len_text + lens_t

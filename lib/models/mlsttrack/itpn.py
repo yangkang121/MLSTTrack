@@ -12,11 +12,11 @@ import xformers.ops as xops
 from torch import Tensor, Size
 from typing import Union, List
 
-from lib.models.rsttrack.base_backbone import BaseBackbone
+from lib.models.mlsttrack.base_backbone import BaseBackbone
 from transformers import BertTokenizer
 from transformers.models.bert.modeling_bert import BertConfig, BertEmbeddings
-from lib.models.rsttrack import utils as utils
-from lib.models.rsttrack.utils import combine_tokens, recover_tokens, generate_template_mask
+from lib.models.mlsttrack import utils as utils
+from lib.models.mlsttrack.utils import combine_tokens, recover_tokens, generate_template_mask
 from lib.models.layers.cross_layer import *
 from lib.models.layers.rgbt_dsl import (
     ModalityAwareLanguageRouter,
@@ -26,7 +26,7 @@ from lib.models.layers.rgbt_dsl import (
 # import clip
 from CLIP import clip
 
-model_clip, _ = clip.load("/media/root123/date-5T/YK-Track_code/RSTTrack-main-uncertainty-memory-full/CLIP/ViT-B-32.pt", device='cpu')
+model_clip, _ = clip.load("/media/root123/date-5T/YK-Track_code/MLSTTrack-main-uncertainty-memory-full/CLIP/ViT-B-32.pt", device='cpu')
 for p in model_clip.parameters():
     p.requires_grad = False
 
@@ -1190,7 +1190,7 @@ class Fast_iTPN(BaseBackbone):
 
                 # DMLP is deliberately used only at selected middle/late interaction
                 # layers. Prompts are zero-initialized residual selectors for stable
-                # finetuning from the original RSTTrack checkpoint.
+                # finetuning from the original MLSTTrack checkpoint.
                 if (
                     self.dsl_enabled
                     and self.mlp_guidance_enabled

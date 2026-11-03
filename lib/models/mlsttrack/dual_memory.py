@@ -1,4 +1,4 @@
-"""Uncertainty-aware dual-timescale memory for RSTTrack.
+"""Uncertainty-aware dual-timescale memory for MLSTTrack.
 
 The bank keeps two complementary memories for every item in the batch:
 1) identity memory: sparse, reliable and semantically diverse long-term anchors;
